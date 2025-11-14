@@ -14,8 +14,6 @@ contract StudentData {
     // Event to log student data addition
     event StudentAdded(string name, uint256 age);
 
- 
-
     // Function to add a new student
     function addStudent(string memory name, uint256 age) public {
         Student memory newStudent = Student(name, age);
@@ -29,11 +27,27 @@ contract StudentData {
     }
 
     // Function to get a specific student's details by index
-    function getStudent(
-        uint256 index
-    ) public view returns (string memory, uint256) {
+    function getStudent(uint256 index)
+        public
+        view
+        returns (string memory, uint256)
+    {
         require(index < students.length, "Student index out of range");
         Student memory student = students[index];
         return (student.name, student.age);
+    }
+
+    // -----------------------------
+    //   FALLBACK & RECEIVE ADDED
+    // -----------------------------
+
+    // This runs when someone sends ETH *without* data
+    receive() external payable {
+        // Accept Ether
+    }
+
+    // This runs when someone calls a function that does NOT exist
+    fallback() external payable {
+        // Accept Ether or handle wrong calls
     }
 }
